@@ -36,10 +36,6 @@ const Home = () => {
         }
     };
 
-    const handleSpotifyAuth = () => {
-        // Redirect to Spotify authentication page
-        window.location.href = "/spotify-login";
-    };
 
     return (
         <Box display="flex" p={2}>
