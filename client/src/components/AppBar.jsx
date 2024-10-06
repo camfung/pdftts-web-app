@@ -5,9 +5,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import FireModal from './FireModal';
 
 const AppBarComponent = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
         const getIsAuthenticated = async () => {
@@ -18,8 +20,12 @@ const AppBarComponent = () => {
             }
         }
         getIsAuthenticated()
-
     }, [])
+
+    const logout = async () => {
+        const response = await instance.get("/logout")
+        setIsAuthenticated(false)
+    }
 
 
     const handleSpotifyAuth = () => {
@@ -47,9 +53,16 @@ const AppBarComponent = () => {
                     </Box>
 
                 </> : <>
-                    <Button variant="outlined" onClick={handleSpotifyAuth} color="inherit">Logout</Button>
+                    <Button variant="outlined" onClick={() => { setModalOpen(true) }} color="inherit">Logout</Button>
                 </>
                 }
+                <FireModal open={modalOpen}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        Are you sure you want to logout?
+                    </Typography>
+                    <Button onClick={() => { logout(); setModalOpen(false) }} variant="outlined" color="inherit">Yes</Button>
+                    <Button onClick={() => { setModalOpen(false) }} color="inherit">No</Button>
+                </FireModal>
             </Toolbar>
         </AppBar>
     );

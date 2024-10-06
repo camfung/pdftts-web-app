@@ -36,7 +36,6 @@ const Home = () => {
         }
     };
 
-
     return (
         <Box display="flex" p={2}>
             <Button onClick={() => {
