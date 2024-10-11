@@ -15,15 +15,11 @@ router.post("/users", userController.createUser);
 router.get("/spotify-login", GoogleController.GoogleLogin);
 router.get("/callback", GoogleController.callback);
 
-// file routes 
-// router.post("/upload", fileController.getFile)
-
 // auth controller
 router.get("/isAuthenticated", authController.isAuthenticated)
 router.get("/logout", authController.logout)
 
 // file controller 
-
 router.post('/single', fileController.upload.single('file'), fileController.fileUpload)
 
 module.exports = router;
