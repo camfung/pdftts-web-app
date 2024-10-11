@@ -4,6 +4,7 @@ const GoogleController = require("./GoogleController.js");
 const fileController = require("./FileController.js");
 const authController = require("./AuthController.js");
 
+
 const router = express.Router();
 
 // User routes
@@ -91,7 +92,6 @@ router.get("/spotify-login", GoogleController.GoogleLogin);
  *         description: Successfully authenticated with Spotify
  */
 router.get("/callback", GoogleController.callback);
-
 // file routes
 /**
  * @swagger
@@ -113,7 +113,6 @@ router.get("/callback", GoogleController.callback);
  *         description: File uploaded successfully
  */
 router.post("/upload", fileController.getFile);
-
 // auth controller
 /**
  * @swagger
