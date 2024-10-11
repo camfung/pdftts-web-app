@@ -1,47 +1,31 @@
-
 const fs = require('fs');
 const path = require('path');
-const multer = require('multer');
+const multer = require("multer")
 
-// Configurable allowed file types
-const allowedFileTypes = ['.txt', '.pdf'];
-
-// Multer setup to save files to the 'files' directory
+// Configure multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, 'files');
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
-    cb(null, uploadPath);
+    cb(null, 'uploads/'); // Specify the uploads directory
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
+    cb(null, Date.now() + path.extname(file.originalname)); // Use a timestamp for unique filenames
+  },
 });
+const upload = multer({ storage });
 
-const fileFilter = (req, file, cb) => {
-  const fileExt = path.extname(file.originalname);
-  if (allowedFileTypes.includes(fileExt)) {
-    cb(null, true); // Accept the file
-  } else {
-    cb(new Error('Invalid file type. Only .txt and .pdf files are allowed.'), false); // Reject the file
-  }
+const fileUpload = (req, res) => {
+  console.log(req.file)
+  res.send(`File uploaded successfully`);
 };
 
-// Initialize multer with storage and file filter
-const upload = multer({ storage: storage, fileFilter: fileFilter });
+// Define a POST route for multiple file uploads
 
-// Express endpoint implementation
-const getFile = (req, res, next) => {
-  upload.single('file')(req, res, (err) => {
-    if (err) {
-      return res.status(400).send({ message: err.message });
-    }
-    res.status(200).send({ message: 'File uploaded successfully.' });
-  });
+const bultFileUpload = (req, res) => {
+  const fileNames = req.files.map(file => file.filename);
+  res.send(`Files uploaded: ${fileNames.join(', ')}`);
 };
 
 module.exports = {
-  getFile,
+  fileUpload,
+  upload,
 };
