@@ -4,7 +4,6 @@ const GoogleController = require("./GoogleController.js");
 const fileController = require("./FileController.js");
 const authController = require("./AuthController.js");
 
-
 const router = express.Router();
 
 // User routes
@@ -32,6 +31,7 @@ const router = express.Router();
  *                     description: The user name
  */
 router.get("/users", userController.getUsers);
+
 /**
  * @swagger
  * /getCredits:
@@ -49,6 +49,7 @@ router.get("/users", userController.getUsers);
  *                   type: number
  */
 router.get("/getCredits", userController.getCredits);
+
 /**
  * @swagger
  * /users:
@@ -82,6 +83,7 @@ router.post("/users", userController.createUser);
  *         description: Redirects to Spotify login
  */
 router.get("/spotify-login", GoogleController.GoogleLogin);
+
 /**
  * @swagger
  * /callback:
@@ -92,6 +94,7 @@ router.get("/spotify-login", GoogleController.GoogleLogin);
  *         description: Successfully authenticated with Spotify
  */
 router.get("/callback", GoogleController.callback);
+
 // file routes
 /**
  * @swagger
@@ -113,6 +116,7 @@ router.get("/callback", GoogleController.callback);
  *         description: File uploaded successfully
  */
 router.post("/upload", fileController.getFile);
+
 // auth controller
 /**
  * @swagger
@@ -126,6 +130,7 @@ router.post("/upload", fileController.getFile);
  *         description: User is not authenticated
  */
 router.get("/isAuthenticated", authController.isAuthenticated);
+
 /**
  * @swagger
  * /logout:
