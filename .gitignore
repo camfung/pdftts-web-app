@@ -1,1 +1,6 @@
-./backend/tests/.venv/
+backend/tests/.venv/
+backend/node_modules/
+backend/.vscode
+
+node_modules/
+
