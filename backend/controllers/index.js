@@ -20,6 +20,6 @@ router.get("/isAuthenticated", authController.isAuthenticated)
 router.get("/logout", authController.logout)
 
 // file controller 
-router.post('/single', fileController.upload.single('file'), fileController.fileUpload)
+router.post('/single', fileController.fileUpload)
 
 module.exports = router;
