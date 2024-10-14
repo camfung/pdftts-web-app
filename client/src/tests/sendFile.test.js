@@ -53,3 +53,38 @@ describe("FetchFileTextWrongExt", () => {
 
 	})
 })
+
+describe("FetchFileTextNoFile", () => {
+	it("should return an error message when no file is attached", async () => {
+		// Simulate no file being passed (e.g., passing null)
+		const mockFile = null;
+
+		// Mocking a 400 error response from the API
+		const mockError = {
+			response: {
+				status: 400,
+				data: { error: "No file uploaded." },  // The expected error message
+			},
+		};
+
+		// Mock axios to reject with the mockError when called
+		axios.post.mockRejectedValueOnce(mockError);
+
+		try {
+			// Act: Call the fetchFileText function with no file
+			await fetchFileText(mockFile);
+		} catch (error) {
+			// Assert: Check that axios.post was not called with FormData containing a file
+			expect(axios.post).toHaveBeenCalledWith("/single", expect.any(FormData));
+
+			// Extracting FormData for further inspection
+			const formData = axios.post.mock.calls[2][1];
+			console.log("formdata:", formData)
+			expect(formData.get("File")).toBe("null"); // Expect the form data to not have the 'File' key
+
+			// Assert: Check that the error thrown matches the expected 400 error message
+			expect(error.response.status).toBe(400);
+			expect(error.response.data.error).toBe("No file uploaded.");
+		}
+	});
+});
