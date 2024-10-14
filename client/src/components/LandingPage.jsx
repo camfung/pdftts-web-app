@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { Box, Typography, Button, styled } from '@mui/material';
+import React, { useCallback, useState } from 'react';
+import { Box, Typography, Button, styled, withTheme } from '@mui/material';
 import axios from '../utils/axios';
+import { fetchFileText } from '../utils/sendFile';
+import TextBox from './forms/TextBox';
 
 const DropZone = styled('div')(({ theme }) => ({
     border: `2px dashed ${theme.palette.primary.main}`,
@@ -18,6 +20,7 @@ const DropZone = styled('div')(({ theme }) => ({
 
 const Home = () => {
     const [file, setFile] = useState(null);
+    const [fileText, setFileText] = useState("")
 
     const handleDragOver = (event) => {
         event.preventDefault();
@@ -30,18 +33,25 @@ const Home = () => {
         }
     };
 
-    const handleChange = (event) => {
+    const handleChange = useCallback(async (event) => {
         if (event.target.files && event.target.files[0]) {
             setFile(event.target.files[0]);
         }
-    };
+    }, [file]);
+
+    const getFileText = useCallback(async () => {
+        const text = await fetchFileText(file);
+        setFileText(text)
+    }, [setFileText, file])
+
+    const sendFileTest = async () => {
+        await getFileText()
+    }
+
 
     return (
         <Box display="flex" p={2}>
-            <Button onClick={() => {
-                axios.get("/users", { withCredentials: true })
-            }
-            }>click this if ur a bitch</Button>
+            <Button variant='contained' onClick={sendFileTest} >click </Button>
             <Box flex={1}>
                 <img src="" alt="Hero Image" style={{ maxWidth: '100%', height: 'auto' }} />
                 <Typography variant="h4" gutterBottom>
@@ -71,6 +81,14 @@ const Home = () => {
                     {file && <Typography mt={2}>File: {file.name}</Typography>}
                 </DropZone>
             </Box>
+
+
+            < TextBox text={fileText} setText={setFileText} />
+
+
+
+
+
         </Box>
     );
 };

@@ -1,7 +1,7 @@
 // fetchFileText.test.ts
 import { describe, it, expect, vi } from 'vitest';
 import axios from '../utils/axios';
-import { fetchFileText } from '../hooks/sendFile';  // assuming it's in the same folder
+import { fetchFileText } from '../utils/sendFile';  // assuming it's in the same folder
 
 vi.mock("../utils/axios", () => ({
 	default: {
@@ -23,7 +23,7 @@ describe("fetchFileTgext", () => {
 		expect(result).toEqual(mockResponse);
 
 		const formData = axios.post.mock.calls[0][1];
-		expect(formData.get("File")).toEqual(mockFile);
+		expect(formData.get("file")).toEqual(mockFile);
 	});
 });
 
@@ -44,7 +44,7 @@ describe("FetchFileTextWrongExt", () => {
 		} catch (error) {
 			expect(axios.post).toHaveBeenCalledWith("/single", expect.any(FormData));
 			const formData = axios.post.mock.calls[0][1];
-			expect(formData.get("File")).toEqual(mockFile);
+			expect(formData.get("file")).toEqual(mockFile);
 
 			expect(error.response.status).toBe(400);
 			expect(error.response.data.error).toBe("multer Error: Invalid file extension")
@@ -80,7 +80,7 @@ describe("FetchFileTextNoFile", () => {
 			// Extracting FormData for further inspection
 			const formData = axios.post.mock.calls[2][1];
 			console.log("formdata:", formData)
-			expect(formData.get("File")).toBe("null"); // Expect the form data to not have the 'File' key
+			expect(formData.get("file")).toBe("null"); // Expect the form data to not have the 'File' key
 
 			// Assert: Check that the error thrown matches the expected 400 error message
 			expect(error.response.status).toBe(400);
